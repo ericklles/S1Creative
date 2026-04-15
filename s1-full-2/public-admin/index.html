@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S1 Studios — Dashboard Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0f0f0f;--bg2:#161616;--bg3:#1e1e1e;--bg4:#252525;
+    --border:#2a2a2a;--border2:#333;
+    --text:#e8e8e8;--text2:#999;--text3:#555;
+    --green:#4ade80;--red:#f87171;--yellow:#fbbf24;--blue:#60a5fa;
+    --radius:10px;
+  }
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+  ::-webkit-scrollbar{width:4px;height:4px}
+  ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+  /* ── LAYOUT ── */
+  .layout{display:flex;min-height:100vh}
+  .sidebar{width:220px;background:var(--bg2);border-right:1px solid var(--border);padding:20px 0;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+  .content{flex:1;overflow:auto;padding:28px}
+
+  /* ── SIDEBAR ── */
+  .s-logo{display:flex;align-items:center;gap:8px;padding:0 20px 24px;border-bottom:1px solid var(--border);margin-bottom:16px}
+  .s-mark{width:28px;height:28px;border:1.5px solid var(--border2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3)}
+  .s-name{font-size:13px;font-weight:600}
+  .s-name span{color:var(--text3);font-weight:400}
+
+  .nav-item{display:flex;align-items:center;gap:9px;padding:9px 20px;font-size:13px;color:var(--text3);cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+  .nav-item:hover{color:var(--text2);background:var(--bg3)}
+  .nav-item.active{color:var(--text);background:var(--bg3);border-left-color:var(--text2)}
+  .nav-icon{font-size:14px;width:18px;text-align:center}
+  .nav-sep{height:1px;background:var(--border);margin:12px 20px}
+
+  .s-bottom{margin-top:auto;padding:16px 20px;border-top:1px solid var(--border)}
+  .s-user{font-size:12px;color:var(--text3);margin-bottom:10px}
+  .s-user strong{color:var(--text2);display:block}
+  .btn-logout{width:100%;background:transparent;border:1px solid var(--border);border-radius:6px;padding:7px;font-size:12px;color:var(--text3);cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
+  .btn-logout:hover{border-color:var(--red);color:var(--red)}
+
+  /* ── PAGES ── */
+  .page{display:none}
+  .page.active{display:block}
+
+  /* ── HEADER ── */
+  .page-header{margin-bottom:24px}
+  .page-title{font-size:20px;font-weight:600;margin-bottom:4px}
+  .page-sub{font-size:13px;color:var(--text3)}
+
+  /* ── STAT CARDS ── */
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+  .stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+  .stat-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:8px;font-family:'JetBrains Mono',monospace}
+  .stat-val{font-size:28px;font-weight:700;font-family:'JetBrains Mono',monospace;line-height:1}
+  .stat-sub{font-size:11px;color:var(--text3);margin-top:5px}
+  .stat-card.green .stat-val{color:var(--green)}
+  .stat-card.blue .stat-val{color:var(--blue)}
+  .stat-card.yellow .stat-val{color:var(--yellow)}
+
+  /* ── TABLE ── */
+  .table-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px}
+  .table-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+  .table-title{font-size:13px;font-weight:600;color:var(--text2)}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th{padding:10px 18px;text-align:left;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border);white-space:nowrap}
+  td{padding:11px 18px;color:var(--text2);border-bottom:1px solid var(--border);vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:rgba(255,255,255,.02)}
+
+  /* ── BADGES ── */
+  .badge{display:inline-flex;align-items:center;border-radius:4px;padding:2px 7px;font-size:10px;font-family:'JetBrains Mono',monospace;font-weight:500}
+  .badge-admin{background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);color:var(--blue)}
+  .badge-user{background:var(--bg3);border:1px solid var(--border2);color:var(--text3)}
+  .badge-on{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);color:var(--green)}
+  .badge-off{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);color:var(--red)}
+
+  /* ── BUTTONS ── */
+  .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
+  .btn-primary{background:var(--bg4);border:1px solid var(--border2);color:var(--text)}
+  .btn-primary:hover{border-color:var(--text3)}
+  .btn-sm{padding:4px 10px;font-size:11px}
+  .btn-danger{background:transparent;border:1px solid rgba(248,113,113,.3);color:var(--red)}
+  .btn-danger:hover{background:rgba(248,113,113,.08)}
+  .btn-success{background:transparent;border:1px solid rgba(74,222,128,.3);color:var(--green)}
+  .btn-success:hover{background:rgba(74,222,128,.08)}
+  .btn-white{background:var(--text);color:var(--bg);border:none}
+  .btn-white:hover{background:#fff}
+
+  /* ── MODAL ── */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+  .overlay.open{display:flex}
+  .modal{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;width:100%;max-width:440px;padding:22px}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+  .modal-title{font-size:14px;font-weight:600}
+  .modal-close{background:transparent;border:1px solid var(--border);border-radius:5px;padding:3px 9px;cursor:pointer;color:var(--text3);font-size:11px;font-family:'Inter',sans-serif}
+  .modal-close:hover{border-color:var(--border2);color:var(--text2)}
+  .modal-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+
+  /* ── FORM ── */
+  .fg{margin-bottom:13px}
+  .fl{display:block;font-size:11px;font-weight:500;color:var(--text3);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+  input[type=text],input[type=password],select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px}
+  input:focus,select:focus{outline:none;border-color:var(--border2)}
+  select option{background:var(--bg3)}
+
+  /* ── CHART ── */
+  .chart-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:20px}
+  .chart-title{font-size:13px;font-weight:600;color:var(--text2);margin-bottom:16px}
+  .bar-chart{display:flex;align-items:flex-end;gap:4px;height:100px}
+  .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .bar{width:100%;background:var(--bg4);border-radius:3px 3px 0 0;transition:height .3s;min-height:2px;position:relative}
+  .bar:hover{background:var(--border2)}
+  .bar-label{font-size:8px;color:var(--text3);font-family:'JetBrains Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:32px}
+
+  /* ── ACTIVITY FEED ── */
+  .feed{display:flex;flex-direction:column;gap:1px}
+  .feed-item{display:flex;align-items:center;gap:12px;padding:9px 18px;border-bottom:1px solid var(--border);font-size:12px}
+  .feed-item:last-child{border-bottom:none}
+  .feed-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .feed-user{font-weight:500;color:var(--text);min-width:90px}
+  .feed-type{color:var(--text3);flex:1}
+  .feed-time{color:var(--text3);font-family:'JetBrains Mono',monospace;font-size:10px;white-space:nowrap}
+
+  /* event colors */
+  .ev-analysis{background:var(--blue)}
+  .ev-download{background:var(--green)}
+  .ev-transcription{background:var(--yellow)}
+  .ev-storyboard{background:#a78bfa}
+  .ev-login{background:var(--text3)}
+  .ev-api_call{background:#f97316}
+  .ev-protection{background:#e879f9}
+
+  /* ── USER DETAIL ── */
+  .user-detail{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:16px}
+  .ud-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px}
+  .ud-label{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:5px;font-family:'JetBrains Mono',monospace}
+  .ud-val{font-size:18px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--text)}
+
+  /* ── TOAST ── */
+  .toast{position:fixed;bottom:20px;right:20px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 16px;font-size:12px;color:var(--text2);z-index:500;transform:translateY(60px);opacity:0;transition:all .25s;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+  .toast.show{transform:translateY(0);opacity:1}
+
+  /* ── SEARCH ── */
+  .search-row{display:flex;gap:8px;margin-bottom:14px}
+  .search-input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px}
+  .search-input:focus{outline:none;border-color:var(--border2)}
+
+  /* empty */
+  .empty{text-align:center;padding:32px;color:var(--text3);font-size:12px}
+  .empty-icon{font-size:28px;margin-bottom:8px;opacity:.3}
+
+  @media(max-width:640px){
+    .sidebar{display:none}
+    .content{padding:16px}
+    .stats-grid{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="s-logo">
+      <div class="s-mark">S1</div>
+      <div class="s-name">Studios <span>/ Admin</span></div>
+    </div>
+    <nav>
+      <div class="nav-item active" onclick="go('overview',this)"><span class="nav-icon">📊</span> Visão Geral</div>
+      <div class="nav-item" onclick="go('users',this)"><span class="nav-icon">👥</span> Usuários</div>
+      <div class="nav-item" onclick="go('activity',this)"><span class="nav-icon">⚡</span> Atividade</div>
+      <div class="nav-sep"></div>
+      <div class="nav-item" onclick="window.open('/app','_blank')"><span class="nav-icon">🔗</span> Abrir App</div>
+    </nav>
+    <div class="s-bottom">
+      <div class="s-user"><strong id="adminName">admin</strong>Administrador</div>
+      <button class="btn-logout" onclick="logout()">Sair</button>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- ── OVERVIEW ── -->
+    <div class="page active" id="page-overview">
+      <div class="page-header">
+        <div class="page-title">Visão Geral</div>
+        <div class="page-sub">Métricas consolidadas de todos os usuários</div>
+      </div>
+
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card"><div class="stat-label">Usuários</div><div class="stat-val" id="st-users">—</div><div class="stat-sub">cadastrados</div></div>
+        <div class="stat-card green"><div class="stat-label">Análises</div><div class="stat-val" id="st-analyses">—</div><div class="stat-sub">de copy</div></div>
+        <div class="stat-card blue"><div class="stat-label">Downloads</div><div class="stat-val" id="st-downloads">—</div><div class="stat-sub">de vídeos</div></div>
+        <div class="stat-card yellow"><div class="stat-label">Transcrições</div><div class="stat-val" id="st-transcriptions">—</div><div class="stat-sub">via Whisper</div></div>
+        <div class="stat-card"><div class="stat-label">Storyboards</div><div class="stat-val" id="st-storyboards">—</div><div class="stat-sub">gerados</div></div>
+        <div class="stat-card"><div class="stat-label">API Calls</div><div class="stat-val" id="st-apicalls">—</div><div class="stat-sub">Claude + Whisper</div></div>
+      </div>
+
+      <div class="chart-wrap">
+        <div class="chart-title">Atividade — últimos 30 dias</div>
+        <div class="bar-chart" id="barChart"><div class="empty"><div class="empty-icon">📈</div>Sem dados ainda</div></div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-head">
+          <div class="table-title">Top Usuários por Uso</div>
+          <button class="btn btn-primary btn-sm" onclick="loadMetrics()">↻ Atualizar</button>
+        </div>
+        <table>
+          <thead><tr><th>Usuário</th><th>Role</th><th>Análises</th><th>Downloads</th><th>Transcrições</th><th>API Calls</th><th>Último acesso</th></tr></thead>
+          <tbody id="summaryTable"><tr><td colspan="7" class="empty">Carregando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── USERS ── -->
+    <div class="page" id="page-users">
+      <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div>
+          <div class="page-title">Usuários</div>
+          <div class="page-sub">Gerencie contas e acessos</div>
+        </div>
+        <button class="btn btn-white" onclick="openCreate()">+ Novo usuário</button>
+      </div>
+
+      <div class="search-row">
+        <input class="search-input" type="text" id="userSearch" placeholder="Buscar por usuário..." oninput="filterUsers()">
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Usuário</th><th>Role</th><th>Status</th><th>Criado em</th><th>Último login</th><th>Ações</th></tr></thead>
+          <tbody id="usersTable"><tr><td colspan="7" class="empty">Carregando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── ACTIVITY ── -->
+    <div class="page" id="page-activity">
+      <div class="page-header">
+        <div class="page-title">Atividade Recente</div>
+        <div class="page-sub">Últimas 50 ações de todos os usuários</div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-head">
+          <div class="table-title">Feed de eventos</div>
+          <button class="btn btn-primary btn-sm" onclick="loadMetrics()">↻ Atualizar</button>
+        </div>
+        <div class="feed" id="activityFeed"><div class="empty"><div class="empty-icon">⚡</div>Sem atividade ainda</div></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Modal criar usuário -->
+<div class="overlay" id="modal-create">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Novo Usuário</div>
+      <button class="modal-close" onclick="closeModal('create')">Fechar</button>
+    </div>
+    <div class="fg"><label class="fl">Username</label><input type="text" id="nu-name" placeholder="usuário"></div>
+    <div class="fg"><label class="fl">Senha</label><input type="password" id="nu-pw" placeholder="••••••••"></div>
+    <div class="fg">
+      <label class="fl">Role</label>
+      <select id="nu-role"><option value="user">user</option><option value="admin">admin</option></select>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-primary" onclick="closeModal('create')">Cancelar</button>
+      <button class="btn btn-white" onclick="createUser()">Criar usuário</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal editar usuário -->
+<div class="overlay" id="modal-edit">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="editTitle">Editar Usuário</div>
+      <button class="modal-close" onclick="closeModal('edit')">Fechar</button>
+    </div>
+    <input type="hidden" id="edit-id">
+    <div class="fg"><label class="fl">Nova senha (deixe vazio para não alterar)</label><input type="password" id="edit-pw" placeholder="••••••••"></div>
+    <div class="fg">
+      <label class="fl">Status</label>
+      <select id="edit-active"><option value="1">Ativo</option><option value="0">Inativo</option></select>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-danger" onclick="deleteUser()">Excluir</button>
+      <button class="btn btn-primary" onclick="closeModal('edit')">Cancelar</button>
+      <button class="btn btn-white" onclick="saveEdit()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let metricsData = null;
+let allUsers = [];
+
+// ── Init ──
+(async () => {
+  try {
+    const me = await api('/api/auth/me');
+    document.getElementById('adminName').textContent = me.username;
+  } catch { window.location.href = '/login.html'; return; }
+  loadMetrics();
+  loadUsers();
+})();
+
+// ── Navigation ──
+function go(page, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── API helper ── FIX #12: não força Content-Type em GETs
+async function api(url, opts={}) {
+  const isGet = !opts.method || opts.method === 'GET';
+  const headers = isGet ? {} : { 'Content-Type': 'application/json' };
+  const res = await fetch(url, { credentials: 'include', headers, ...opts });
+  if (res.status === 401) { window.location.href = '/login.html'; throw new Error('Não autenticado'); }
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Erro');
+  return data;
+}
+
+// ── Load metrics ──
+async function loadMetrics() {
+  try {
+    metricsData = await api('/api/admin/metrics');
+    renderOverview(metricsData);
+    renderActivity(metricsData.recent);
+  } catch(e) { toast('Erro ao carregar métricas: ' + e.message); }
+}
+
+function renderOverview({ summary, daily, recent }) {
+  // Stats
+  const totals = summary.reduce((a, u) => ({
+    analyses: a.analyses + (u.analyses||0),
+    downloads: a.downloads + (u.downloads||0),
+    transcriptions: a.transcriptions + (u.transcriptions||0),
+    storyboards: a.storyboards + (u.storyboards||0),
+    api_calls: a.api_calls + (u.api_calls||0),
+  }), { analyses:0, downloads:0, transcriptions:0, storyboards:0, api_calls:0 });
+
+  document.getElementById('st-users').textContent          = summary.length;
+  document.getElementById('st-analyses').textContent       = totals.analyses;
+  document.getElementById('st-downloads').textContent      = totals.downloads;
+  document.getElementById('st-transcriptions').textContent = totals.transcriptions;
+  document.getElementById('st-storyboards').textContent    = totals.storyboards;
+  document.getElementById('st-apicalls').textContent       = totals.api_calls;
+
+  // Bar chart
+  const chart = document.getElementById('barChart');
+  if (daily.length === 0) {
+    chart.innerHTML = '<div class="empty"><div class="empty-icon">📈</div>Sem dados ainda</div>';
+  } else {
+    const max = Math.max(...daily.map(d => d.total), 1);
+    chart.innerHTML = daily.slice(-30).map(d => {
+      const h = Math.round((d.total / max) * 100);
+      const label = d.day.slice(5); // MM-DD
+      return `<div class="bar-col">
+        <div class="bar" style="height:${h}px" title="${d.day}: ${d.total} eventos"></div>
+        <div class="bar-label">${label}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Summary table
+  const tb = document.getElementById('summaryTable');
+  if (!summary.length) { tb.innerHTML = '<tr><td colspan="7" class="empty">Nenhum usuário</td></tr>'; return; }
+  tb.innerHTML = summary.map(u => `
+    <tr>
+      <td><strong>${esc(u.username)}</strong></td>
+      <td><span class="badge ${u.role==='admin'?'badge-admin':'badge-user'}">${u.role}</span></td>
+      <td>${u.analyses||0}</td>
+      <td>${u.downloads||0}</td>
+      <td>${u.transcriptions||0}</td>
+      <td>${u.api_calls||0}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)">${fmtDate(u.last_activity||u.last_login)}</td>
+    </tr>`).join('');
+}
+
+// ── Load users ──
+async function loadUsers() {
+  try {
+    allUsers = await api('/api/admin/users');
+    renderUsers(allUsers);
+  } catch(e) { toast('Erro ao carregar usuários'); }
+}
+
+function renderUsers(users) {
+  const tb = document.getElementById('usersTable');
+  if (!users.length) { tb.innerHTML = '<tr><td colspan="7" class="empty">Nenhum usuário</td></tr>'; return; }
+  tb.innerHTML = users.map(u => `
+    <tr>
+      <td style="font-family:'JetBrains Mono',monospace;color:var(--text3)">${u.id}</td>
+      <td><strong>${esc(u.username)}</strong></td>
+      <td><span class="badge ${u.role==='admin'?'badge-admin':'badge-user'}">${u.role}</span></td>
+      <td><span class="badge ${u.active?'badge-on':'badge-off'}">${u.active?'ativo':'inativo'}</span></td>
+      <td style="font-size:11px;color:var(--text3)">${fmtDate(u.created_at)}</td>
+      <td style="font-size:11px;color:var(--text3)">${fmtDate(u.last_login)}</td>
+      <td><button class="btn btn-primary btn-sm" onclick="openEdit(${u.id},'${esc(u.username)}',${u.active})">Editar</button></td>
+    </tr>`).join('');
+}
+
+function filterUsers() {
+  const q = document.getElementById('userSearch').value.toLowerCase();
+  renderUsers(allUsers.filter(u => u.username.toLowerCase().includes(q)));
+}
+
+// ── Activity ──
+function renderActivity(events) {
+  const feed = document.getElementById('activityFeed');
+  if (!events.length) { feed.innerHTML = '<div class="empty"><div class="empty-icon">⚡</div>Sem atividade ainda</div>'; return; }
+  const labels = { analysis:'Análise de copy', download:'Download de vídeo', transcription:'Transcrição', storyboard:'Storyboard', login:'Login', api_call:'Chamada de API', protection:'Proteção de áudio' };
+  feed.innerHTML = events.map(e => `
+    <div class="feed-item">
+      <div class="feed-dot ev-${e.type}"></div>
+      <div class="feed-user">${esc(e.username)}</div>
+      <div class="feed-type">${labels[e.type]||e.type}</div>
+      <div class="feed-time">${fmtDate(e.created_at)}</div>
+    </div>`).join('');
+}
+
+// ── CRUD Usuários ──
+function openCreate() {
+  document.getElementById('nu-name').value = '';
+  document.getElementById('nu-pw').value = '';
+  document.getElementById('nu-role').value = 'user';
+  openModal('create');
+}
+
+async function createUser() {
+  const username = document.getElementById('nu-name').value.trim();
+  const password = document.getElementById('nu-pw').value;
+  const role     = document.getElementById('nu-role').value;
+  if (!username || !password) { toast('Preencha todos os campos'); return; }
+  try {
+    await api('/api/admin/users', { method:'POST', body: JSON.stringify({ username, password, role }) });
+    toast('Usuário criado!');
+    closeModal('create');
+    loadUsers();
+  } catch(e) { toast('Erro: ' + e.message); }
+}
+
+function openEdit(id, username, active) {
+  document.getElementById('edit-id').value = id;
+  document.getElementById('editTitle').textContent = `Editar — ${username}`;
+  document.getElementById('edit-pw').value = '';
+  document.getElementById('edit-active').value = active ? '1' : '0';
+  openModal('edit');
+}
+
+async function saveEdit() {
+  const id     = Number(document.getElementById('edit-id').value);
+  const pw     = document.getElementById('edit-pw').value;
+  const active = document.getElementById('edit-active').value === '1';
+  const body   = { active };
+  if (pw) body.password = pw;
+  try {
+    await api(`/api/admin/users/${id}`, { method:'PATCH', body: JSON.stringify(body) });
+    toast('Usuário atualizado!');
+    closeModal('edit');
+    loadUsers(); loadMetrics();
+  } catch(e) { toast('Erro: ' + e.message); }
+}
+
+async function deleteUser() {
+  const id = Number(document.getElementById('edit-id').value);
+  if (!confirm('Excluir este usuário permanentemente?')) return;
+  try {
+    await api(`/api/admin/users/${id}`, { method:'DELETE' });
+    toast('Usuário excluído');
+    closeModal('edit');
+    loadUsers(); loadMetrics();
+  } catch(e) { toast('Erro: ' + e.message); }
+}
+
+// ── Auth ──
+async function logout() {
+  await fetch('/api/auth/logout', { method:'POST', credentials:'include' });
+  window.location.href = '/login.html';
+}
+
+// ── Modal ──
+function openModal(id) { document.getElementById('modal-'+id).classList.add('open'); }
+function closeModal(id) { document.getElementById('modal-'+id).classList.remove('open'); }
+document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('open'); }));
+
+// ── Toast ──
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── Utils ──
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmtDate(s) {
+  if (!s) return '—';
+  try {
+    const d = new Date(s);
+    return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}) + ' ' + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  } catch { return s; }
+}
+
+// Auto-refresh a cada 60s
+setInterval(loadMetrics, 60000);
+</script>
+</body>
+</html>

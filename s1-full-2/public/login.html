@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S1 Studios — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;background:#0f0f0f;color:#e8e8e8;min-height:100vh;display:flex;align-items:center;justify-content:center;-webkit-font-smoothing:antialiased}
+  .box{width:100%;max-width:360px;padding:24px}
+  .logo{display:flex;align-items:center;gap:10px;margin-bottom:40px;justify-content:center}
+  .logo-mark{width:32px;height:32px;border:1.5px solid #333;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:#888}
+  .logo-name{font-size:15px;font-weight:600;color:#e8e8e8}
+  .logo-name span{color:#555;font-weight:400}
+  h2{font-size:20px;font-weight:600;margin-bottom:6px;text-align:center}
+  .sub{font-size:13px;color:#555;text-align:center;margin-bottom:28px}
+  .fg{margin-bottom:14px}
+  label{display:block;font-size:11px;font-weight:500;color:#666;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+  input{width:100%;background:#161616;border:1px solid #2a2a2a;border-radius:7px;padding:11px 14px;color:#e8e8e8;font-family:'Inter',sans-serif;font-size:14px;transition:border-color .15s}
+  input:focus{outline:none;border-color:#444}
+  .btn{width:100%;background:#e8e8e8;color:#0f0f0f;border:none;border-radius:7px;padding:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;margin-top:4px}
+  .btn:hover{background:#fff}
+  .err{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);border-radius:6px;padding:10px 14px;font-size:12px;color:#f87171;margin-bottom:14px;display:none}
+  .err.show{display:block}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="logo">
+    <div class="logo-mark">S1</div>
+    <div class="logo-name">Studios <span>/ Tools</span></div>
+  </div>
+  <h2>Entrar</h2>
+  <p class="sub">Acesso restrito a usuários autorizados</p>
+  <div class="err" id="err"></div>
+  <div class="fg">
+    <label>Usuário</label>
+    <input type="text" id="username" placeholder="seu usuário" autocomplete="username">
+  </div>
+  <div class="fg">
+    <label>Senha</label>
+    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+  </div>
+  <button class="btn" onclick="login()">Entrar</button>
+</div>
+<script>
+  // Se já está logado, redireciona
+  fetch('/api/auth/me').then(r => {
+    if (r.ok) return r.json().then(d => { window.location.href = d.role === 'admin' ? '/dashboard' : '/'; });
+  });
+
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+
+  async function login() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const err = document.getElementById('err');
+    err.classList.remove('show');
+
+    if (!username || !password) { showErr('Preencha todos os campos'); return; }
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      if (!res.ok) { showErr(data.error || 'Erro ao entrar'); return; }
+      window.location.href = data.role === 'admin' ? '/dashboard' : '/';
+    } catch(e) {
+      showErr('Erro de conexão com o servidor');
+    }
+  }
+
+  function showErr(msg) {
+    const e = document.getElementById('err');
+    e.textContent = msg;
+    e.classList.add('show');
+  }
+</script>
+</body>
+</html>
