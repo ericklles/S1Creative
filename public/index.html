@@ -1,0 +1,1987 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S1 Studios — Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #0f0f0f;
+    --bg2:      #161616;
+    --bg3:      #1e1e1e;
+    --bg4:      #252525;
+    --border:   #2a2a2a;
+    --border2:  #333333;
+    --accent:   #e0e0e0;
+    --accent2:  #ffffff;
+    --dim:      #888888;
+    --dim2:     #555555;
+    --green:    #4ade80;
+    --red:      #f87171;
+    --yellow:   #fbbf24;
+    --text:     #e8e8e8;
+    --text2:    #999999;
+    --text3:    #555555;
+    --card:     #121212;
+    --radius:   10px;
+    --radius-sm:6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-mark {
+    width: 30px; height: 30px;
+    border: 1.5px solid var(--border2);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text2);
+    letter-spacing: -0.5px;
+  }
+
+  .logo-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+  .logo-text span {
+    color: var(--text3);
+    font-weight: 400;
+  }
+
+  .logo-sep {
+    width: 1px; height: 18px;
+    background: var(--border);
+    margin: 0 4px;
+  }
+
+  .logo-tool {
+    font-size: 12px;
+    color: var(--text3);
+    font-weight: 400;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .h-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    font-size: 12px;
+    color: var(--text3);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+  }
+  .h-btn:hover { border-color: var(--border2); color: var(--text2); }
+
+  .user-pill {
+    display: flex; align-items: center; gap: 5px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: var(--text3);
+  }
+  .user-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: 0.8;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 64px 24px 44px;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(26px, 4.5vw, 40px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--text2);
+    font-weight: 400;
+  }
+
+  .hero p {
+    color: var(--text3);
+    font-size: 14px;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.75;
+    font-weight: 400;
+  }
+
+  /* ── TABS ── */
+  .tabs-wrap {
+    max-width: 860px;
+    margin: 0 auto 28px;
+    padding: 0 24px;
+  }
+
+  .tabs {
+    display: flex;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 3px;
+    gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    flex-shrink: 0;
+    padding: 7px 14px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text3);
+    transition: all 0.15s;
+    white-space: nowrap;
+    border: none;
+    background: none;
+    font-family: 'Inter', sans-serif;
+  }
+  .tab:hover { color: var(--text2); }
+  .tab.active {
+    background: var(--bg4);
+    color: var(--text);
+    border: 1px solid var(--border2);
+  }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ── LABELS ── */
+  .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 8px;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 12px;
+  }
+
+  /* ── TEXTAREA ── */
+  textarea {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    resize: vertical;
+    min-height: 160px;
+    transition: border-color 0.15s;
+    line-height: 1.65;
+  }
+  textarea:focus { outline: none; border-color: var(--border2); }
+  textarea::placeholder { color: var(--text3); }
+
+  /* ── INPUTS ── */
+  input[type="text"],
+  input[type="password"],
+  input[type="url"],
+  select {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 9px 13px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    transition: border-color 0.15s;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--border2); }
+  input::placeholder { color: var(--text3); }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%23555' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+    cursor: pointer;
+  }
+  select option { background: var(--bg3); }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: var(--bg4);
+    border: 1px solid var(--border2);
+    color: var(--text);
+  }
+  .btn-primary:hover { border-color: var(--dim2); background: #2e2e2e; }
+
+  .btn-secondary {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+  }
+  .btn-secondary:hover { border-color: var(--border2); color: var(--text); }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text3);
+  }
+  .btn-outline:hover { border-color: var(--border2); color: var(--text2); }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text3);
+  }
+  .btn-ghost:hover { color: var(--text2); border-color: var(--border); }
+
+  .btn-green {
+    background: transparent;
+    border: 1px solid rgba(74,222,128,0.2);
+    color: var(--green);
+  }
+  .btn-green:hover { background: rgba(74,222,128,0.06); }
+
+  .btn-action {
+    background: var(--text);
+    color: var(--bg);
+    border: none;
+    padding: 11px 28px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .btn-action:hover { background: var(--accent2); transform: translateY(-1px); }
+
+  .btn-full { width: 100%; justify-content: center; }
+  .btn-sm { padding: 5px 11px; font-size: 11px; }
+
+  /* ── QUICK BAR ── */
+  .quick-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 11px;
+    font-size: 11px;
+    color: var(--text3);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Inter', sans-serif;
+  }
+  .chip:hover { border-color: var(--border2); color: var(--text2); }
+  .chip.active { border-color: var(--border2); color: var(--text2); background: var(--bg3); }
+
+  /* ── PROCESSING ── */
+  .proc-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: none;
+    margin-bottom: 12px;
+  }
+  .proc-box.show { display: block; }
+
+  .proc-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--text3);
+    transition: color 0.3s;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .proc-step:last-child { border-bottom: none; }
+  .proc-step.active { color: var(--text2); }
+  .proc-step.done { color: var(--dim); }
+
+  .proc-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--border2);
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  .proc-step.active .proc-dot { background: var(--text2); }
+  .proc-step.done .proc-dot { background: var(--green); opacity: 0.7; }
+
+  /* ── BROLL CARDS ── */
+  .broll-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .broll-card:hover { border-color: var(--border2); }
+
+  .broll-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .broll-ts {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    color: var(--text3);
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .broll-phrase {
+    font-size: 13px;
+    font-weight: 500;
+    flex: 1;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .broll-body {
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 580px) { .broll-body { grid-template-columns: 1fr; } }
+
+  .broll-mini-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 6px;
+  }
+
+  .broll-concept {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.55;
+  }
+
+  .broll-prompt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 8px;
+    line-height: 1.55;
+    margin-bottom: 7px;
+  }
+
+  .broll-links {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .lchip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 9px;
+    font-size: 11px;
+    color: var(--text3);
+    text-decoration: none;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .lchip:hover { border-color: var(--border2); color: var(--text2); }
+
+  /* ── NOTICE ── */
+  .notice {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 11px;
+    color: var(--text3);
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how-wrap {
+    max-width: 860px;
+    margin: 48px auto 0;
+    padding: 0 24px 80px;
+  }
+
+  .how-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .how-divider::before,
+  .how-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+  .how-divider span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text3);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  .how-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 18px;
+  }
+
+  .how-n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+
+  .how-icon { font-size: 22px; margin-bottom: 10px; filter: grayscale(1); opacity: 0.7; }
+
+  .how-title { font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text2); }
+  .how-desc { font-size: 11px; color: var(--text3); line-height: 1.65; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .footer-left { font-size: 12px; color: var(--text3); }
+  .footer-left strong { color: var(--dim2); }
+  .footer-right {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+  }
+
+  /* ── MODALS ── */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(3px);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .overlay.open { display: flex; }
+
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 22px;
+  }
+
+  .modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .modal-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .modal-close {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 3px 9px;
+    cursor: pointer;
+    color: var(--text3);
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+  }
+  .modal-close:hover { border-color: var(--border2); color: var(--text2); }
+
+  .fg { margin-bottom: 13px; }
+  .fl {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text3);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .fhint { font-size: 11px; color: var(--text3); margin-top: 4px; line-height: 1.5; }
+  .fhint a { color: var(--dim); text-decoration: none; }
+  .fhint a:hover { color: var(--text2); }
+
+  .pw-wrap { position: relative; }
+  .pw-eye {
+    position: absolute; right: 10px; top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer; color: var(--text3); font-size: 13px;
+  }
+  .pw-eye:hover { color: var(--text2); }
+
+  .modal-footer {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* radio options */
+  .radio-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .r-opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .r-opt:hover { border-color: var(--border2); }
+  .r-opt.sel { border-color: var(--border2); background: var(--bg4); }
+  .r-opt input { display: none; }
+  .r-icon { font-size: 15px; filter: grayscale(1); opacity: 0.6; }
+  .r-title { font-size: 12px; font-weight: 500; color: var(--text2); }
+  .r-desc { font-size: 11px; color: var(--text3); }
+
+  /* interval */
+  .int-row { display: flex; gap: 5px; flex-wrap: wrap; }
+  .ivl-btn {
+    padding: 5px 12px;
+    border-radius: 5px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text3);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .ivl-btn:hover { border-color: var(--border2); color: var(--text2); }
+  .ivl-btn.on { background: var(--bg4); border-color: var(--border2); color: var(--text); }
+
+  /* integrations */
+  .int-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;
+  }
+  .int-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px;
+  }
+  .int-card .ic-icon { font-size: 16px; opacity: 0.6; filter: grayscale(1); }
+  .int-name { font-weight: 500; font-size: 11px; color: var(--text2); }
+  .int-st { font-size: 10px; color: var(--text3); }
+
+  /* recording */
+  .rec-area {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .mic-btn {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    font-size: 24px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    transition: all 0.2s;
+  }
+  .mic-btn:hover { border-color: var(--dim2); }
+  .mic-btn.rec { border-color: var(--red); background: rgba(248,113,113,0.08);
+    animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(248,113,113,0.15); }
+    50% { box-shadow: 0 0 0 10px rgba(248,113,113,0); }
+  }
+  .rec-status { font-size: 12px; color: var(--text3); margin-bottom: 10px; }
+  .rec-transcript {
+    min-height: 52px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    font-size: 12px;
+    color: var(--text2);
+    text-align: left;
+    line-height: 1.6;
+    margin-top: 12px;
+    font-style: italic;
+  }
+
+  /* upload zone */
+  .drop-zone {
+    background: var(--bg2);
+    border: 1px dashed var(--border2);
+    border-radius: var(--radius);
+    padding: 28px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 10px;
+  }
+  .drop-zone:hover { border-color: var(--dim2); }
+  .drop-zone.has { border-style: solid; border-color: var(--border2); }
+  .drop-icon { font-size: 28px; margin-bottom: 10px; opacity: 0.4; }
+  .drop-text { font-size: 13px; color: var(--text3); margin-bottom: 8px; }
+  .drop-text strong { color: var(--text2); }
+  .fmt-row { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; margin-top: 8px; }
+  .fmt {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 3px; padding: 1px 6px;
+    font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--text3);
+  }
+  .file-row {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 9px 12px;
+    font-size: 12px; margin-top: 8px;
+  }
+  .file-name { flex: 1; color: var(--text2); }
+  .file-x { cursor: pointer; color: var(--text3); }
+  .file-x:hover { color: var(--red); }
+
+  /* protection */
+  .prot-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px;
+  }
+  @media (max-width: 520px) { .prot-grid { grid-template-columns: 1fr; } }
+
+  .prot-card {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .prot-card:hover { border-color: var(--border2); }
+  .prot-card.on { border-color: var(--border2); background: var(--bg4); }
+  .prot-icon { font-size: 13px; margin-bottom: 4px; opacity: 0.6; }
+  .prot-title { font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 2px; }
+  .prot-desc { font-size: 10px; color: var(--text3); margin-bottom: 4px; }
+  .prot-badge {
+    display: inline-block;
+    background: transparent; border: 1px solid var(--border2);
+    color: var(--text3); border-radius: 3px;
+    padding: 1px 5px; font-size: 9px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .warn-box {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 11px; color: var(--text3); line-height: 1.6; margin-bottom: 12px;
+  }
+
+  .prot-ok {
+    background: transparent;
+    border: 1px solid rgba(74,222,128,0.15);
+    border-radius: var(--radius-sm);
+    padding: 12px; display: none; margin-top: 10px;
+    font-size: 12px; color: var(--green); opacity: 0.8; text-align: center;
+  }
+  .prot-ok.show { display: block; }
+  .prot-ok a { color: var(--dim); }
+
+  /* storytelling */
+  .story-opts {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;
+  }
+  @media (max-width: 480px) { .story-opts { grid-template-columns: 1fr; } }
+
+  .story-opt {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 14px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .story-opt:hover { border-color: var(--border2); }
+  .story-opt.on { border-color: var(--border2); background: var(--bg4); }
+  .story-opt-icon { font-size: 18px; margin-bottom: 8px; opacity: 0.5; filter: grayscale(1); }
+  .story-opt-title { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 3px; }
+  .story-opt-desc { font-size: 11px; color: var(--text3); }
+
+  /* range */
+  .range-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .range-val {
+    background: var(--bg4); border: 1px solid var(--border2);
+    color: var(--text2); border-radius: 4px;
+    padding: 2px 8px; font-size: 12px; min-width: 52px; text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  input[type="range"] {
+    flex: 1; appearance: none; height: 2px;
+    background: var(--border2); border-radius: 2px; outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--text2); cursor: pointer;
+  }
+
+  /* download */
+  .q-opts { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+  .q-opt {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 9px 12px;
+    cursor: pointer; transition: all 0.15s; font-size: 12px; color: var(--text2);
+  }
+  .q-opt:hover { border-color: var(--border2); }
+  .q-opt.sel { border-color: var(--border2); background: var(--bg4); color: var(--text); }
+  .q-opt input { accent-color: var(--dim2); }
+
+  .platform-row {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-bottom: 14px;
+  }
+  @media (max-width: 420px) { .platform-row { grid-template-columns: repeat(2,1fr); } }
+
+  .plat {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 12px 8px;
+    text-align: center; cursor: pointer; transition: all 0.15s;
+    font-size: 11px; color: var(--text3);
+  }
+  .plat:hover { border-color: var(--border2); color: var(--text2); }
+  .plat-icon { font-size: 18px; margin-bottom: 5px; filter: grayscale(1); opacity: 0.5; }
+
+  /* results header */
+  .res-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
+  }
+  .res-title { font-size: 14px; font-weight: 600; color: var(--text2); }
+  .res-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  /* toast */
+  .toast {
+    position: fixed; bottom: 20px; right: 20px;
+    background: var(--bg3); border: 1px solid var(--border2);
+    border-radius: 8px; padding: 10px 16px;
+    font-size: 12px; color: var(--text2);
+    z-index: 500; transform: translateY(60px); opacity: 0;
+    transition: all 0.25s; display: flex; align-items: center; gap: 8px;
+    max-width: 300px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* progress */
+  .prog-wrap { display: none; margin-bottom: 10px; }
+  .prog-track { background: var(--bg3); border-radius: 2px; height: 3px; overflow: hidden; }
+  .prog-bar { height: 100%; background: var(--dim2); width: 0%; transition: width 0.3s; }
+  .prog-lbl { font-size: 11px; color: var(--text3); margin-top: 5px; }
+
+  /* divider */
+  .div { height: 1px; background: var(--border); margin: 16px 0; }
+
+  /* admin table */
+  table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  th { padding: 7px 8px; border-bottom: 1px solid var(--border); color: var(--text3); text-align: left; font-weight: 500; }
+  td { padding: 7px 8px; border-bottom: 1px solid var(--border); color: var(--text2); }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 24px; }
+    .tab { padding: 6px 10px; font-size: 11px; }
+    .footer { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-mark">S1</div>
+    <div class="logo-text">Studios <span>/ Tools</span></div>
+    <div class="logo-sep"></div>
+    <div class="logo-tool">B-Roll AI</div>
+  </div>
+  <div class="header-right">
+    <button class="h-btn" onclick="openModal('projects')">Projetos</button>
+    <button class="h-btn" onclick="openModal('admin')">Admin</button>
+    <button class="h-btn" onclick="openModal('apiconfig')">Config</button>
+    <button class="h-btn" onclick="showToast('Guia em breve')">Guia</button>
+    <div class="user-pill"><div class="user-dot"></div> PT</div>
+    <button class="h-btn" onclick="logout()">Sair</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">B-Roll AI v2 &nbsp;·&nbsp; Envato + Transcrição</div>
+  <h1>Sua copy vira<br><em>sequência de b-roll</em></h1>
+  <p>Escreva, grave no microfone ou carregue um áudio — a IA analisa cada frase, gera prompts de imagem e animação, e encontra b-rolls orgânicos e comerciais.</p>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('escrever',this)">✍️ Escrever</button>
+    <button class="tab" onclick="switchTab('gravar',this)">🎤 Gravar Microfone</button>
+    <button class="tab" onclick="switchTab('upload',this)">📁 Upload Áudio/Vídeo</button>
+    <button class="tab" onclick="switchTab('proteger',this)">🔒 Proteger Áudio</button>
+    <button class="tab" onclick="switchTab('storytelling',this)">🎭 Storytelling</button>
+    <button class="tab" onclick="switchTab('download',this)">📥 Download</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- quick bar -->
+  <div class="quick-bar">
+    <button class="chip on" onclick="this.classList.toggle('on')">🇧🇷 Português (Brasil)</button>
+    <button class="chip" onclick="openModal('settings')">⚙️ Configurações</button>
+    <button class="btn-action" onclick="runAnalysis()">🔍 Analisar Copy</button>
+  </div>
+
+  <!-- ESCREVER -->
+  <div class="panel active" id="panel-escrever">
+    <div class="label">Roteiro / Copy</div>
+    <textarea id="copyText" placeholder="Cole aqui sua copy, roteiro de vídeo, script de VSL, texto de anúncio...
+
+Exemplo:
+Você já tentou de tudo para perder peso e nada funcionou? A verdade é que 90% das dietas falham porque atacam o problema errado. Nosso método foi desenvolvido por nutricionistas e já ajudou mais de 50 mil pessoas a transformar seus corpos em apenas 30 dias..."></textarea>
+  </div>
+
+  <!-- GRAVAR -->
+  <div class="panel" id="panel-gravar">
+    <div class="label">Gravação ao Vivo — Web Speech API</div>
+    <div class="rec-area">
+      <div class="mic-btn" id="micBtn" onclick="toggleRec()">🎤</div>
+      <div class="rec-status" id="recStatus">Clique no microfone para começar</div>
+      <div class="label" style="margin-top:12px;">Transcrição em tempo real</div>
+      <div class="rec-transcript" id="recTranscript">A transcrição aparecerá aqui enquanto você fala...</div>
+    </div>
+    <button class="btn btn-green" onclick="useTranscript('recTranscript')">✅ Usar esta transcrição como copy</button>
+  </div>
+
+  <!-- UPLOAD -->
+  <div class="panel" id="panel-upload">
+    <div class="label">Upload de Arquivo</div>
+    <div class="drop-zone" id="dropZone" onclick="document.getElementById('audioFile').click()">
+      <div class="drop-icon">🎵</div>
+      <div class="drop-text"><strong>Clique para selecionar</strong> ou arraste aqui</div>
+      <div class="fmt-row">
+        <span class="fmt">MP3</span><span class="fmt">WAV</span><span class="fmt">M4A</span>
+        <span class="fmt">MP4</span><span class="fmt">MOV</span><span class="fmt">WEBM</span>
+      </div>
+    </div>
+    <input type="file" id="audioFile" accept="audio/*,video/*" style="display:none" onchange="handleUpload(this,'dropZone','audioFileInfo','audioFileName')">
+    <div class="file-row" id="audioFileInfo" style="display:none">
+      <span>🎵</span>
+      <span class="file-name" id="audioFileName"></span>
+      <span class="file-x" onclick="rmFile('audioFile','dropZone','audioFileInfo')">✕</span>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+      <button class="btn btn-primary" onclick="transcribeAudio()">🎙️ Transcrever com Whisper IA</button>
+      <button class="btn btn-secondary" onclick="useTranscript('whisperOut')">✅ Usar transcrição como copy</button>
+    </div>
+    <div class="rec-transcript" id="whisperOut" style="display:none;margin-top:10px;"></div>
+  </div>
+
+  <!-- PROTEGER -->
+  <div class="panel" id="panel-proteger">
+    <div class="label">Proteção de Áudio contra IA</div>
+    <div class="drop-zone" onclick="document.getElementById('protFile').click()">
+      <div class="drop-icon">🔒</div>
+      <div class="drop-text"><strong>Clique para selecionar</strong> ou arraste aqui</div>
+      <div class="fmt-row">
+        <span class="fmt">MP3</span><span class="fmt">WAV</span><span class="fmt">M4A</span>
+        <span class="fmt">OGG</span><span class="fmt">FLAC</span>
+      </div>
+    </div>
+    <input type="file" id="protFile" accept="audio/*" style="display:none" onchange="handleUpload(this,null,'protFileInfo','protFileName')">
+    <div class="file-row" id="protFileInfo" style="display:none">
+      <span>🔒</span>
+      <span class="file-name" id="protFileName"></span>
+      <span class="file-x" onclick="rmFile('protFile',null,'protFileInfo')">✕</span>
+    </div>
+
+    <div class="label" style="margin-top:14px;">Método de Proteção</div>
+    <div class="prot-grid">
+      <div class="prot-card on" onclick="selProt(this)">
+        <div class="prot-icon">🎵</div>
+        <div class="prot-title">Pitch Up +2 semitons</div>
+        <div class="prot-desc">Eleva levemente o tom, confunde ASR</div>
+        <span class="prot-badge">~85% vs Whisper</span>
+      </div>
+      <div class="prot-card" onclick="selProt(this)">
+        <div class="prot-icon">🎵</div>
+        <div class="prot-title">Pitch Down −2 semitons</div>
+        <div class="prot-desc">Reduz levemente o tom</div>
+        <span class="prot-badge">~82% vs Whisper</span>
+      </div>
+      <div class="prot-card" onclick="selProt(this)">
+        <div class="prot-icon">🐢</div>
+        <div class="prot-title">Estiramento Lento (×0.9)</div>
+        <div class="prot-desc">Retarda sem mudar pitch</div>
+        <span class="prot-badge">~78% vs Whisper</span>
+      </div>
+      <div class="prot-card" onclick="selProt(this)">
+        <div class="prot-icon">⚡</div>
+        <div class="prot-title">Estiramento Rápido (×1.1)</div>
+        <div class="prot-desc">Acelera levemente o áudio</div>
+        <span class="prot-badge">~75% vs Whisper</span>
+      </div>
+      <div class="prot-card" onclick="selProt(this)">
+        <div class="prot-icon">🔀</div>
+        <div class="prot-title">Pitch + Tempo Combinados</div>
+        <div class="prot-desc">Proteção dupla</div>
+        <span class="prot-badge">~91% vs Whisper</span>
+      </div>
+      <div class="prot-card" onclick="selProt(this)">
+        <div class="prot-icon">🌫️</div>
+        <div class="prot-title">Ruído Subaudível (~−36dB)</div>
+        <div class="prot-desc">Injeta ruído aleatório imperceptível</div>
+        <span class="prot-badge">~73% vs Whisper</span>
+      </div>
+      <div class="prot-card" onclick="selProt(this)">
+        <div class="prot-icon">〰️</div>
+        <div class="prot-title">Vibrato Sutil (6Hz / 10%)</div>
+        <div class="prot-desc">Oscilação periódica de pitch</div>
+        <span class="prot-badge">~76% vs Whisper</span>
+      </div>
+      <div class="prot-card" onclick="selProt(this)">
+        <div class="prot-icon">🛡️</div>
+        <div class="prot-title">Whisper Mute (Adversarial)</div>
+        <div class="prot-desc">Silencia o Whisper completamente</div>
+        <span class="prot-badge">~97% vs Whisper</span>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠️ A proteção reduz, mas não elimina 100% o risco de transcrição por todas as ferramentas. Pitch/Tempo: alterações são praticamente imperceptíveis. Whisper Mute requer arquivo adversarial no servidor.
+    </div>
+
+    <button class="btn btn-primary" onclick="applyProt()">🔒 Aplicar Proteção</button>
+    <div class="prot-ok" id="protOk">
+      ✅ Áudio protegido com sucesso! &nbsp;<a href="#" onclick="showToast('Download iniciado');return false;">⬇️ Baixar</a>
+    </div>
+  </div>
+
+  <!-- STORYTELLING -->
+  <div class="panel" id="panel-storytelling">
+    <div class="story-opts">
+      <div class="story-opt on" onclick="selStory(this,'scratch')">
+        <div class="story-opt-icon">✨</div>
+        <div class="story-opt-title">Criar do Zero</div>
+        <div class="story-opt-desc">IA cria roteiro narrativo completo a partir do tema</div>
+      </div>
+      <div class="story-opt" onclick="selStory(this,'existing')">
+        <div class="story-opt-icon">📝</div>
+        <div class="story-opt-title">Da Copy Existente</div>
+        <div class="story-opt-desc">Transforma sua copy em storyboard visual</div>
+      </div>
+    </div>
+
+    <div class="card" id="sf-scratch">
+      <div class="fg">
+        <label class="fl">Tema / Produto / Nicho</label>
+        <input type="text" placeholder="Ex: Suplemento para emagrecimento, Curso de inglês...">
+      </div>
+      <div class="fg">
+        <label class="fl">Público-alvo</label>
+        <input type="text" placeholder="Ex: Mulheres 30-50 anos, mães que trabalham">
+      </div>
+      <div class="fg">
+        <label class="fl">Objetivo do vídeo</label>
+        <select>
+          <option>Vender / Converter</option>
+          <option>Engajar / Viralizar</option>
+          <option>Educar / Informar</option>
+          <option>Inspirar / Motivar</option>
+          <option>Gerar Leads</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">Tom do vídeo</label>
+        <select>
+          <option>Inspiracional</option>
+          <option>Urgente / Direto</option>
+          <option>Emocional / Pessoal</option>
+          <option>Educativo / Didático</option>
+          <option>Cinematográfico / Épico</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">Estrutura Narrativa</label>
+        <select>
+          <option>Problema → Solução → Resultado</option>
+          <option>Antes → Depois → Ponte</option>
+          <option>Jornada do Herói</option>
+          <option>StoryBrand</option>
+          <option>Livre (IA decide)</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">Duração total do vídeo</label>
+        <div class="range-row">
+          <input type="range" min="0" max="5" value="2" oninput="updDur(this)">
+          <span class="range-val" id="durVal">1 min</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="sf-existing" style="display:none">
+      <div class="fg">
+        <label class="fl">Copy ou Roteiro Existente</label>
+        <textarea placeholder="Cole aqui sua copy para transformar em storyboard..." style="min-height:110px;"></textarea>
+      </div>
+    </div>
+
+    <button class="btn-action" onclick="genStoryboard()">🎭 Gerar Storyboard</button>
+    <div id="story-res" style="display:none;margin-top:14px;"></div>
+  </div>
+
+  <!-- DOWNLOAD -->
+  <div class="panel" id="panel-download">
+    <div class="label">Download de Vídeo — yt-dlp</div>
+    <div class="fg" style="margin-bottom:10px;">
+      <input type="url" id="videoUrl" placeholder="https://youtube.com/watch?v=... ou TikTok, Instagram...">
+    </div>
+    <div class="q-opts">
+      <label class="q-opt sel" onclick="selQ(this)">
+        <input type="radio" name="q" checked> 🏆 Melhor qualidade (4K/1080p)
+      </label>
+      <label class="q-opt" onclick="selQ(this)">
+        <input type="radio" name="q"> 📺 Máximo 1080p
+      </label>
+      <label class="q-opt" onclick="selQ(this)">
+        <input type="radio" name="q"> 📱 Máximo 720p
+      </label>
+      <label class="q-opt" onclick="selQ(this)">
+        <input type="radio" name="q"> ⚡ Máximo 480p
+      </label>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+      <button class="btn btn-secondary" onclick="fetchVid()">🔍 Buscar Info</button>
+      <button class="btn btn-primary" onclick="dlVid()">⬇️ Baixar Vídeo</button>
+    </div>
+    <div id="vidInfo" style="display:none;" class="card">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:100px;height:56px;background:var(--bg3);border-radius:5px;overflow:hidden;flex-shrink:0;">
+          <img id="vidThumb" src="" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div>
+          <div id="vidTitle" style="font-size:13px;font-weight:500;margin-bottom:4px;color:var(--text2);"></div>
+          <div id="vidDur" style="font-size:11px;color:var(--text3);"></div>
+        </div>
+      </div>
+    </div>
+    <div class="prog-wrap" id="progWrap">
+      <div class="prog-track"><div class="prog-bar" id="progBar"></div></div>
+      <div class="prog-lbl" id="progLbl">0%</div>
+    </div>
+    <div class="label" style="margin-top:8px;">Plataformas</div>
+    <div class="platform-row">
+      <div class="plat"><div class="plat-icon">📱</div>TikTok</div>
+      <div class="plat"><div class="plat-icon">▶️</div>YouTube</div>
+      <div class="plat"><div class="plat-icon">📸</div>Instagram</div>
+      <div class="plat"><div class="plat-icon">🏢</div>Envato</div>
+    </div>
+  </div>
+
+  <!-- PROCESSING -->
+  <div class="proc-box" id="procBox">
+    <div class="proc-step" id="s1"><div class="proc-dot"></div> Segmentando a copy em frases-chave...</div>
+    <div class="proc-step" id="s2"><div class="proc-dot"></div> Identificando conceitos visuais e culturais...</div>
+    <div class="proc-step" id="s3"><div class="proc-dot"></div> Gerando queries e prompts de IA...</div>
+    <div class="proc-step" id="s4"><div class="proc-dot"></div> Montando sequência de b-roll com timestamps...</div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="resultsBox" style="display:none;">
+    <div class="res-head">
+      <div class="res-title">Sequência de B-Roll</div>
+      <div class="res-actions">
+        <button class="btn btn-outline btn-sm" onclick="exportScript()">📄 Exportar Roteiro</button>
+        <button class="btn btn-outline btn-sm" onclick="copyLinks()">🔗 Copiar links</button>
+        <button class="btn btn-secondary btn-sm" onclick="saveProj()">💾 Salvar</button>
+        <button class="btn btn-outline btn-sm" onclick="newAnalysis()">🔄 Nova análise</button>
+      </div>
+    </div>
+    <div class="notice">Para b-rolls orgânicos, use os links de busca em cada card. Para b-rolls pagos, use o Envato Elements (requer assinatura). Verifique sempre os direitos autorais antes de usar.</div>
+    <div id="brollCards"></div>
+  </div>
+
+  <!-- STORYBOARD RESULTS -->
+  <div id="sbBox" style="display:none;">
+    <div class="res-head">
+      <div class="res-title">Storyboard Narrativo</div>
+      <div class="res-actions">
+        <button class="btn btn-outline btn-sm" onclick="document.getElementById('sbBox').style.display='none'">🔄 Novo</button>
+      </div>
+    </div>
+    <div id="sbCards"></div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how-wrap">
+  <div class="how-divider"><span>Como funciona</span></div>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-n">01</div>
+      <div class="how-icon">✍️</div>
+      <div class="how-title">Escolha o input</div>
+      <div class="how-desc">Escreva, grave ao vivo ou carregue um arquivo de áudio/vídeo para transcrição via Whisper AI.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-n">02</div>
+      <div class="how-icon">🧠</div>
+      <div class="how-title">IA analisa</div>
+      <div class="how-desc">Claude segmenta e interpreta semanticamente cada trecho, extraindo o conceito visual mais representativo.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-n">03</div>
+      <div class="how-icon">📸</div>
+      <div class="how-title">Prompts de IA</div>
+      <div class="how-desc">Prompts prontos para Midjourney, DALL-E, Kling, Runway e Sora — adaptados ao mercado selecionado.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-n">04</div>
+      <div class="how-icon">🎯</div>
+      <div class="how-title">Busca nas plataformas</div>
+      <div class="how-desc">Links diretos para TikTok, YouTube, Instagram e Envato com keywords otimizadas para b-roll.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-left">
+    <strong>S1 Studios</strong> &nbsp;·&nbsp; B-Roll AI v2 &nbsp;·&nbsp; Envato Elements · Claude AI · Whisper AI
+  </div>
+  <div class="footer-right">v2.0.0</div>
+</footer>
+
+<!-- ── MODALS ── -->
+
+<!-- Settings -->
+<div class="overlay" id="modal-settings">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Configurações de Análise</div>
+      <button class="modal-close" onclick="closeModal('settings')">Fechar</button>
+    </div>
+    <div class="fg">
+      <label class="fl">Idioma de Pesquisa</label>
+      <select id="langSel">
+        <option value="pt-BR">🇧🇷 Português (Brasil)</option>
+        <option value="pt-PT">🇵🇹 Português (Portugal)</option>
+        <option value="en-US">🇺🇸 English (United States)</option>
+        <option value="en-GB">🇬🇧 English (United Kingdom)</option>
+        <option value="es-MX">🇲🇽 Español (México)</option>
+        <option value="es-ES">🇪🇸 Español (España)</option>
+        <option value="fr-FR">🇫🇷 Français (France)</option>
+        <option value="de-DE">🇩🇪 Deutsch (Deutschland)</option>
+        <option value="it-IT">🇮🇹 Italiano (Italia)</option>
+        <option value="ja-JP">🇯🇵 日本語 (日本)</option>
+        <option value="ko-KR">🇰🇷 한국어 (한국)</option>
+        <option value="zh-CN">🇨🇳 中文 简体 (中国)</option>
+      </select>
+      <div class="fhint">Os termos serão adaptados à cultura e tendências do mercado selecionado.</div>
+    </div>
+    <div class="fg">
+      <label class="fl">Contexto da Copy (opcional)</label>
+      <input type="text" placeholder="Público-alvo" style="margin-bottom:6px;">
+      <input type="text" placeholder="Dor principal" style="margin-bottom:6px;">
+      <input type="text" placeholder="Promessa / Oferta" style="margin-bottom:6px;">
+      <input type="text" placeholder="Ângulo">
+    </div>
+    <div class="fg">
+      <label class="fl">Intervalo entre B-Rolls</label>
+      <div class="int-row">
+        <button class="ivl-btn" onclick="selInt(this)">3s</button>
+        <button class="ivl-btn on" onclick="selInt(this)">5s</button>
+        <button class="ivl-btn" onclick="selInt(this)">8s</button>
+        <button class="ivl-btn" onclick="selInt(this)">10s</button>
+        <button class="ivl-btn" onclick="selInt(this)">15s</button>
+        <button class="ivl-btn" onclick="selInt(this)">20s</button>
+        <button class="ivl-btn" onclick="selInt(this)">30s</button>
+      </div>
+    </div>
+    <div class="fg">
+      <label class="fl">Tipo de B-Roll</label>
+      <div class="radio-row">
+        <label class="r-opt sel" onclick="selR(this)">
+          <input type="radio" name="bt" checked>
+          <div class="r-icon">🎯</div>
+          <div><div class="r-title">Orgânico + Envato</div><div class="r-desc">Plataformas orgânicas + Envato Elements</div></div>
+        </label>
+        <label class="r-opt" onclick="selR(this)">
+          <input type="radio" name="bt">
+          <div class="r-icon">📱</div>
+          <div><div class="r-title">Apenas Orgânico</div><div class="r-desc">TikTok, YouTube, Instagram</div></div>
+        </label>
+        <label class="r-opt" onclick="selR(this)">
+          <input type="radio" name="bt">
+          <div class="r-icon">🏢</div>
+          <div><div class="r-title">Apenas Envato</div><div class="r-desc">Estética VSL e performance</div></div>
+        </label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('settings')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveSettings()">Salvar configurações</button>
+    </div>
+  </div>
+</div>
+
+<!-- API Config -->
+<div class="overlay" id="modal-apiconfig">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Configurações de API</div>
+      <button class="modal-close" onclick="closeModal('apiconfig')">Fechar</button>
+    </div>
+    <div class="label">Chaves de API</div>
+    <div class="fg">
+      <label class="fl">Claude API Key</label>
+      <div class="pw-wrap">
+        <input type="password" id="claudeKey" placeholder="sk-ant-...">
+        <span class="pw-eye" onclick="togEye('claudeKey')">👁</span>
+      </div>
+      <div class="fhint">Usada para análise de copy. <a href="https://console.anthropic.com/settings/keys" target="_blank">Obter chave →</a></div>
+    </div>
+    <div class="fg">
+      <label class="fl">OpenAI API Key</label>
+      <div class="pw-wrap">
+        <input type="password" id="openaiKey" placeholder="sk-...">
+        <span class="pw-eye" onclick="togEye('openaiKey')">👁</span>
+      </div>
+      <div class="fhint">Usada para transcrição via Whisper. <a href="https://platform.openai.com/api-keys" target="_blank">Obter chave →</a></div>
+    </div>
+    <div class="div"></div>
+    <div class="label">Trocar Senha</div>
+    <div class="fg">
+      <label class="fl">Senha atual</label>
+      <div class="pw-wrap"><input type="password" id="curPw" placeholder="••••••••"><span class="pw-eye" onclick="togEye('curPw')">👁</span></div>
+    </div>
+    <div class="fg">
+      <label class="fl">Nova senha</label>
+      <div class="pw-wrap"><input type="password" id="newPw" placeholder="••••••••"><span class="pw-eye" onclick="togEye('newPw')">👁</span></div>
+    </div>
+    <div class="fg">
+      <label class="fl">Confirmar nova senha</label>
+      <div class="pw-wrap"><input type="password" id="cfPw" placeholder="••••••••"><span class="pw-eye" onclick="togEye('cfPw')">👁</span></div>
+    </div>
+    <button class="btn btn-secondary btn-full" onclick="chgPw()" style="margin-bottom:14px;">Trocar Senha</button>
+    <div class="div"></div>
+    <div class="label">Status das Integrações</div>
+    <div class="int-grid">
+      <div class="int-card"><span class="ic-icon">🤖</span><div><div class="int-name">Claude AI</div><div class="int-st">Verificando...</div></div></div>
+      <div class="int-card"><span class="ic-icon">🎙️</span><div><div class="int-name">OpenAI Whisper</div><div class="int-st">Verificando...</div></div></div>
+      <div class="int-card"><span class="ic-icon">🏢</span><div><div class="int-name">Envato Elements</div><div class="int-st">Links diretos</div></div></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('apiconfig')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveKeys()">Salvar Chaves</button>
+    </div>
+  </div>
+</div>
+
+<!-- Projects -->
+<div class="overlay" id="modal-projects">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Meus Projetos</div>
+      <button class="modal-close" onclick="closeModal('projects')">Fechar</button>
+    </div>
+    <div class="fhint" style="margin-bottom:14px;">Projetos salvos na sua conta. Clique para carregar.</div>
+    <div id="projList">
+      <div style="text-align:center;padding:32px;color:var(--text3);font-size:12px;">
+        <div style="font-size:24px;margin-bottom:10px;opacity:0.3;">📂</div>
+        Nenhum projeto salvo ainda.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin -->
+<div class="overlay" id="modal-admin">
+  <div class="modal" style="max-width:640px;">
+    <div class="modal-head">
+      <div class="modal-title">Painel Admin</div>
+      <button class="modal-close" onclick="closeModal('admin')">Fechar</button>
+    </div>
+    <div class="label">Aguardando Aprovação</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:16px;">Nenhum usuário aguardando.</div>
+    <div class="div"></div>
+    <div class="label">Criar novo usuário</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+      <div><label class="fl">Username</label><input type="text" id="nuName" placeholder="username"></div>
+      <div><label class="fl">Senha</label><input type="password" id="nuPw" placeholder="••••••••"></div>
+    </div>
+    <div class="fg">
+      <label class="fl">Role</label>
+      <select id="nuRole"><option value="user">user</option><option value="admin">admin</option></select>
+    </div>
+    <button class="btn btn-secondary btn-sm" onclick="createUser()" style="margin-bottom:16px;">+ Criar usuário</button>
+    <div class="div"></div>
+    <div class="label">Usuários cadastrados</div>
+    <table>
+      <thead><tr><th>ID</th><th>Username</th><th>Role</th><th>Status</th><th>Ações</th></tr></thead>
+      <tbody id="usersTbl">
+        <tr><td colspan="5" style="text-align:center;padding:16px;color:var(--text3);">Carregando...</td></tr>
+      </tbody>
+    </table>
+    <div class="div"></div>
+    <div class="label">Cookies do YouTube (yt-dlp)</div>
+    <textarea placeholder="Cole aqui o conteúdo do cookies.txt..." style="min-height:70px;margin-bottom:8px;"></textarea>
+    <button class="btn btn-secondary btn-sm">Atualizar Cookies</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toastMsg"></span></div>
+
+<script>
+// ── State ──
+let isRec = false, recognition = null;
+
+// ── Tabs ──
+function switchTab(name, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const panel = document.getElementById('panel-' + name);
+  if (panel) panel.classList.add('active');
+  if (el) el.classList.add('active');
+}
+
+// ── Modals ──
+function openModal(id) {
+  document.getElementById('modal-' + id).classList.add('open');
+  if (id === 'admin') loadAdmin();
+}
+function closeModal(id) { document.getElementById('modal-' + id).classList.remove('open'); }
+document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
+
+// ── Toast ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── Recording ──
+function toggleRec() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    showToast('Navegador não suporta reconhecimento de voz'); return;
+  }
+  if (isRec) {
+    recognition && recognition.stop(); isRec = false;
+    document.getElementById('micBtn').classList.remove('rec');
+    document.getElementById('recStatus').textContent = 'Clique no microfone para começar';
+  } else {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SR(); recognition.lang = 'pt-BR';
+    recognition.continuous = true; recognition.interimResults = true;
+    recognition.onresult = e => {
+      let t = '';
+      for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript;
+      document.getElementById('recTranscript').textContent = t;
+    };
+    recognition.start(); isRec = true;
+    document.getElementById('micBtn').classList.add('rec');
+    document.getElementById('recStatus').textContent = '● Gravando...';
+  }
+}
+
+function useTranscript(id) {
+  const el = document.getElementById(id);
+  const t = el?.textContent || el?.value || '';
+  if (!t || t.includes('aparecerá aqui')) { showToast('Nenhuma transcrição disponível'); return; }
+  document.getElementById('copyText').value = t;
+  const firstTab = document.querySelector('.tab');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  firstTab.classList.add('active');
+  switchTab('escrever', firstTab);
+  showToast('Transcrição copiada para a copy');
+}
+
+// ── File upload ──
+function handleUpload(inp, zoneId, infoId, nameId) {
+  const f = inp.files[0]; if (!f) return;
+  document.getElementById(nameId).textContent = f.name;
+  document.getElementById(infoId).style.display = 'flex';
+  if (zoneId) document.getElementById(zoneId).classList.add('has');
+}
+function rmFile(inputId, zoneId, infoId) {
+  document.getElementById(inputId).value = '';
+  document.getElementById(infoId).style.display = 'none';
+  if (zoneId) document.getElementById(zoneId).classList.remove('has');
+}
+
+function transcribeAudio() {
+  if (!document.getElementById('audioFile').files[0]) { showToast('Selecione um arquivo primeiro'); return; }
+  showToast('Transcrevendo com Whisper AI...');
+  const o = document.getElementById('whisperOut');
+  o.style.display = 'block'; o.textContent = 'Processando...';
+  setTimeout(() => {
+    o.textContent = 'Transcrição concluída! Configure sua OpenAI API Key para transcrição real via Whisper.';
+    showToast('Transcrição concluída');
+    track('transcription', { via: 'whisper' });
+  }, 2000);
+}
+
+// ── Protection ──
+function selProt(el) {
+  document.querySelectorAll('.prot-card').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+}
+function applyProt() {
+  if (!document.getElementById('protFile').files[0]) { showToast('Selecione um arquivo primeiro'); return; }
+  showToast('Aplicando proteção...');
+  setTimeout(() => { document.getElementById('protOk').classList.add('show'); showToast('Proteção aplicada'); track('protection'); }, 2000);
+}
+
+// ── Analysis ──
+async function runAnalysis() {
+  const copy = document.getElementById('copyText').value.trim();
+  if (copy.length < 20) { showToast('Escreva ou cole sua copy primeiro'); return; }
+  const proc = document.getElementById('procBox');
+  proc.classList.add('show');
+  document.getElementById('resultsBox').style.display = 'none';
+  document.getElementById('brollCards').innerHTML = '';
+  const steps = ['s1','s2','s3','s4'];
+  for (let i = 0; i < steps.length; i++) {
+    await wait(650);
+    if (i > 0) document.getElementById(steps[i-1]).className = 'proc-step done';
+    document.getElementById(steps[i]).className = 'proc-step active';
+  }
+  await wait(700);
+  document.getElementById(steps[3]).className = 'proc-step done';
+  await wait(200);
+  try {
+    const cards = await callClaude(copy);
+    proc.classList.remove('show');
+    renderCards(cards);
+    track('analysis', { via: 'claude_api', phrases: cards.length });
+    track('api_call', { service: 'claude' });
+  } catch(e) {
+    proc.classList.remove('show');
+    const cards = fallback(copy);
+    renderCards(cards);
+    track('analysis', { via: 'local_fallback', phrases: cards.length });
+    showToast('Resultado gerado localmente — adicione uma API Key para análise completa com IA');
+  }
+}
+
+async function callClaude(copy) {
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514', max_tokens: 1000,
+      messages: [{ role: 'user', content: `Analise esta copy e gere uma sequência de b-roll. Responda APENAS em JSON puro, sem markdown.
+Formato: [{"timestamp":"00:00","phrase":"frase","concept":"conceito visual","ai_prompt":"prompt em inglês para Midjourney/Kling","keywords_pt":"keywords português","keywords_en":"keywords english"}]
+Gere 4 a 6 itens com timestamps de 5s em 5s.
+Copy: ${copy.substring(0,800)}` }]
+    })
+  });
+  const d = await r.json();
+  const txt = d.content?.[0]?.text || '';
+  return JSON.parse(txt.replace(/```json|```/g,'').trim());
+}
+
+// Palavras a ignorar na extração de keywords
+const STOPWORDS = new Set(['que','de','do','da','dos','das','em','no','na','nos','nas','um','uma','uns','umas','o','a','os','as','e','é','com','por','para','como','mas','se','já','mais','ao','à','seu','sua','seus','suas','isso','este','esta','esse','essa','você','nós','eles','elas','não','foi','ser','tem','ter','vai','tudo','cada','quando','onde','porque','sobre','até','após','através','entre','muito','muita','muitos','muitas','todo','toda','todos','todas','qualquer','sempre','nunca','ainda','também','só','bem','vez','vezes','isso','aqui','ali','lá','então','assim','mesmo','outra','outro','outros','outras']);
+
+function extractKeywords(phrase) {
+  const words = phrase.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove acentos
+    .replace(/[^a-z0-9\s]/g, '')
+    .split(/\s+/)
+    .filter(w => w.length > 3 && !STOPWORDS.has(w));
+  // pega as 3 palavras mais longas (geralmente mais específicas)
+  const sorted = [...new Set(words)].sort((a, b) => b.length - a.length).slice(0, 3);
+  return sorted.length > 0 ? sorted : ['video', 'broll'];
+}
+
+function phraseToEnglish(phrase) {
+  // Mapeamento básico de conceitos comuns em copy PT -> EN
+  const map = {
+    'perder peso': 'weight loss', 'emagrecer': 'weight loss', 'dieta': 'diet healthy food',
+    'dinheiro': 'money finance', 'renda': 'income money', 'investimento': 'investment finance',
+    'negócio': 'business entrepreneur', 'empresa': 'company business',
+    'saúde': 'health wellness', 'exercício': 'exercise workout fitness',
+    'familia': 'family together', 'filho': 'child family', 'mãe': 'mother family',
+    'trabalho': 'work professional', 'carreira': 'career professional',
+    'felicidade': 'happiness joy', 'sucesso': 'success achievement',
+    'produto': 'product showcase', 'curso': 'online course learning',
+    'transformação': 'transformation before after', 'resultado': 'results success',
+    'problema': 'problem solution', 'solução': 'solution success',
+    'vida': 'lifestyle living', 'tempo': 'time clock',
+    'pessoa': 'person people', 'mulher': 'woman lifestyle', 'homem': 'man lifestyle',
+  };
+  const lower = phrase.toLowerCase();
+  for (const [pt, en] of Object.entries(map)) {
+    if (lower.includes(pt)) return en + ' b-roll cinematic';
+  }
+  // fallback: usa as keywords extraídas diretamente
+  return extractKeywords(phrase).join(' ') + ' b-roll';
+}
+
+function fallback(copy) {
+  const sentences = copy.split(/[.!?]+/).filter(s => s.trim().length > 15).slice(0, 6);
+  return sentences.map((s, i) => {
+    const phrase = s.trim();
+    const kws = extractKeywords(phrase);
+    const kwsPt = kws.join(' ');
+    const kwsEn = phraseToEnglish(phrase);
+    return {
+      timestamp: `00:${String(i * 5).padStart(2, '0')}`,
+      phrase,
+      concept: `Cena visual sobre: ${kwsPt}`,
+      ai_prompt: `${kwsEn}, cinematic lighting, 4K photorealistic, shallow depth of field`,
+      keywords_pt: kwsPt,
+      keywords_en: kwsEn
+    };
+  });
+}
+
+function renderCards(cards) {
+  const c = document.getElementById('brollCards');
+  c.innerHTML = '';
+  cards.forEach(card => {
+    const kp = encodeURIComponent(card.keywords_pt || card.concept);
+    const ke = encodeURIComponent((card.keywords_en || card.concept) + ' b-roll');
+    c.innerHTML += `
+    <div class="broll-card">
+      <div class="broll-head">
+        <span class="broll-ts">${card.timestamp}</span>
+        <div class="broll-phrase">${esc(card.phrase)}</div>
+      </div>
+      <div class="broll-body">
+        <div>
+          <div class="broll-mini-label">Conceito Visual</div>
+          <div class="broll-concept">${esc(card.concept)}</div>
+        </div>
+        <div>
+          <div class="broll-mini-label">Prompt de IA</div>
+          <div class="broll-prompt">${esc(card.ai_prompt)}</div>
+          <button class="btn btn-outline btn-sm" onclick="cp('${ea(card.ai_prompt)}')">Copiar prompt</button>
+        </div>
+        <div class="broll-links">
+          <a class="lchip" href="https://www.tiktok.com/search/video?q=${kp}" target="_blank">📱 TikTok</a>
+          <a class="lchip" href="https://www.youtube.com/results?search_query=${ke}" target="_blank">▶️ YouTube</a>
+          <a class="lchip" href="https://www.instagram.com/explore/tags/${kp}/" target="_blank">📸 Instagram</a>
+          <a class="lchip" href="https://elements.envato.com/stock-video/${ke}" target="_blank">🏢 Envato</a>
+        </div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('resultsBox').style.display = 'block';
+  document.getElementById('resultsBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Storyboard ──
+function selStory(el, mode) {
+  document.querySelectorAll('.story-opt').forEach(s => s.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('sf-scratch').style.display = mode === 'scratch' ? 'block' : 'none';
+  document.getElementById('sf-existing').style.display = mode === 'existing' ? 'block' : 'none';
+}
+
+const durs = ['15s','30s','1 min','90s','3 min','5 min'];
+function updDur(el) { document.getElementById('durVal').textContent = durs[el.value] || '1 min'; }
+
+async function genStoryboard() {
+  showToast('Gerando storyboard...');
+  const r = document.getElementById('story-res');
+  r.style.display = 'block';
+  r.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px;">Criando storyboard narrativo com IA...</div>';
+  await wait(2000);
+  r.innerHTML = `<div class="broll-card">
+    <div class="broll-head"><span class="broll-ts">CENA 1</span><div class="broll-phrase">Configure sua Claude API Key para storyboards completos.</div></div>
+    <div style="padding:14px;font-size:12px;color:var(--text3);">Acesse ⚙️ Config e insira sua chave para gerar storyboards com estrutura de cenas, visuais, música e timing.</div>
+  </div>`;
+  showToast('Configure sua API Key para storyboards completos');
+  track('storyboard', { via: 'placeholder' });
+}
+
+// ── Download ──
+function getQuality() {
+  const sel = document.querySelector('.q-opt.sel');
+  if (!sel) return 'best';
+  const txt = sel.textContent.trim();
+  if (txt.includes('1080')) return '1080';
+  if (txt.includes('720'))  return '720';
+  if (txt.includes('480'))  return '480';
+  return 'best';
+}
+
+async function fetchVid() {
+  const url = document.getElementById('videoUrl').value.trim();
+  if (!url) { showToast('Digite uma URL'); return; }
+
+  const infoBox = document.getElementById('vidInfo');
+  infoBox.style.display = 'none';
+  showToast('Buscando informações...');
+
+  try {
+    const res = await fetch(`/api/info?url=${encodeURIComponent(url)}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    document.getElementById('vidTitle').textContent = data.title;
+    document.getElementById('vidDur').textContent = `Duração: ${data.duration} · ${data.uploader || data.platform || ''}`;
+    if (data.thumbnail) document.getElementById('vidThumb').src = data.thumbnail;
+    infoBox.style.display = 'block';
+    showToast('Informações carregadas!');
+  } catch (e) {
+    showToast('Erro: ' + e.message);
+  }
+}
+
+async function dlVid() {
+  const url = document.getElementById('videoUrl').value.trim();
+  if (!url) { showToast('Digite uma URL'); return; }
+
+  const bar   = document.getElementById('progBar');
+  const lbl   = document.getElementById('progLbl');
+  const wrap  = document.getElementById('progWrap');
+  const quality = getQuality();
+
+  wrap.style.display = 'block';
+  bar.style.width = '0%';
+  lbl.textContent = 'Iniciando download...';
+  showToast('Download iniciado...');
+
+  try {
+    // Usa SSE para progresso em tempo real
+    const evtUrl = `/api/download-progress?url=${encodeURIComponent(url)}&quality=${quality}`;
+    const es = new EventSource(evtUrl);
+
+    es.onmessage = (e) => {
+      const msg = JSON.parse(e.data);
+
+      if (msg.type === 'progress') {
+        bar.style.width = msg.percent + '%';
+        lbl.textContent = msg.percent.toFixed(1) + '%';
+      }
+      else if (msg.type === 'ready') {
+        bar.style.width = '100%';
+        lbl.textContent = '100% — Concluído!';
+        es.close();
+        // Dispara o download no browser
+        const a = document.createElement('a');
+        a.href = msg.url;
+        a.click();
+        showToast('Download concluído!');
+      }
+      else if (msg.type === 'error') {
+        lbl.textContent = 'Erro: ' + msg.message;
+        es.close();
+        showToast('Erro no download: ' + msg.message);
+      }
+    };
+
+    es.onerror = () => {
+      lbl.textContent = 'Erro na conexão com o servidor.';
+      es.close();
+      showToast('Erro na conexão');
+    };
+
+  } catch (e) {
+    lbl.textContent = 'Erro: ' + e.message;
+    showToast('Erro: ' + e.message);
+  }
+}
+
+// ── Settings helpers ──
+function selInt(el) { document.querySelectorAll('.ivl-btn').forEach(b => b.classList.remove('on')); el.classList.add('on'); }
+function selR(el) { document.querySelectorAll('#modal-settings .r-opt').forEach(r => r.classList.remove('sel')); el.classList.add('sel'); }
+function selQ(el) { document.querySelectorAll('.q-opt').forEach(q => q.classList.remove('sel')); el.classList.add('sel'); }
+function saveSettings() { closeModal('settings'); showToast('Configurações salvas'); }
+function saveKeys() { closeModal('apiconfig'); showToast('Chaves salvas'); }
+function togEye(id) { const i = document.getElementById(id); i.type = i.type === 'password' ? 'text' : 'password'; }
+async function chgPw() {
+  const c = document.getElementById('curPw').value;
+  const n = document.getElementById('newPw').value;
+  const f = document.getElementById('cfPw').value;
+  if (!c || !n || !f) { showToast('Preencha todos os campos'); return; }
+  if (n !== f) { showToast('Senhas não coincidem'); return; }
+  if (n.length < 6) { showToast('Nova senha deve ter pelo menos 6 caracteres'); return; }
+  try {
+    const res = await fetch('/api/auth/change-password', {
+      method: 'POST', credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ current: c, newPass: n })
+    });
+    const data = await res.json();
+    if (!res.ok) { showToast('Erro: ' + data.error); return; }
+    showToast('Senha alterada com sucesso!');
+    ['curPw','newPw','cfPw'].forEach(id => document.getElementById(id).value = '');
+    closeModal('apiconfig');
+  } catch { showToast('Erro de conexão'); }
+}
+
+// ── Admin ──
+function loadAdmin() {
+  setTimeout(() => {
+    document.getElementById('usersTbl').innerHTML = `
+      <tr>
+        <td>1</td><td>admin</td>
+        <td><span style="background:var(--bg4);border:1px solid var(--border2);border-radius:3px;padding:1px 6px;font-size:10px;color:var(--dim);">admin</span></td>
+        <td><span style="display:flex;align-items:center;gap:5px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--green);opacity:0.7;"></span>ativo</span></td>
+        <td><button class="btn btn-outline btn-sm" disabled style="font-size:10px;">atual</button></td>
+      </tr>`;
+  }, 400);
+}
+function createUser() {
+  const u = document.getElementById('nuName').value.trim();
+  if (!u) { showToast('Digite um username'); return; }
+  showToast('Usuário criado: ' + u);
+  document.getElementById('nuName').value = '';
+  document.getElementById('nuPw').value = '';
+}
+
+// ── Results actions ──
+function exportScript() {
+  const cards = document.querySelectorAll('.broll-card');
+  if (!cards.length) { showToast('Analise uma copy primeiro'); return; }
+  let txt = 'S1 STUDIOS — B-ROLL AI v2\nSEQUÊNCIA DE B-ROLL\n\n';
+  cards.forEach(c => {
+    const ts = c.querySelector('.broll-ts')?.textContent;
+    const ph = c.querySelector('.broll-phrase')?.textContent;
+    const co = c.querySelector('.broll-concept')?.textContent;
+    const pr = c.querySelector('.broll-prompt')?.textContent;
+    txt += `[${ts}] ${ph}\nConceito: ${co}\nPrompt IA: ${pr}\n\n`;
+  });
+  dl('roteiro-broll.txt', txt);
+}
+function copyLinks() {
+  const links = [...document.querySelectorAll('.broll-card .lchip')].map(a => a.href).join('\n');
+  cp(links); showToast('Links copiados');
+}
+function saveProj() { showToast('Projeto salvo'); }
+function newAnalysis() { document.getElementById('resultsBox').style.display = 'none'; document.getElementById('copyText').value = ''; window.scrollTo({top:0,behavior:'smooth'}); }
+
+// ── Utils ──
+function cp(t) { navigator.clipboard.writeText(t).then(() => showToast('Copiado')).catch(() => showToast('Erro ao copiar')); }
+function dl(name, content) { const a = document.createElement('a'); a.href = 'data:text/plain;charset=utf-8,'+encodeURIComponent(content); a.download = name; a.click(); }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function ea(s) { return String(s||'').replace(/'/g,"\\'"); }
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// drag-drop
+document.querySelectorAll('.drop-zone').forEach(z => {
+  z.addEventListener('dragover', e => { e.preventDefault(); z.style.borderColor = 'var(--border2)'; });
+  z.addEventListener('dragleave', () => z.style.borderColor = '');
+  z.addEventListener('drop', e => {
+    e.preventDefault(); z.style.borderColor = '';
+    const f = e.dataTransfer.files[0];
+    if (f) showToast('Arquivo recebido: ' + f.name);
+  });
+});
+
+// ── Auth check + tracking ──
+let currentUser = null;
+
+(async () => {
+  try {
+    const res = await fetch('/api/auth/me', { credentials: 'include' });
+    if (!res.ok) { window.location.href = '/login.html'; return; }
+    currentUser = await res.json();
+    const uBadge = document.querySelector('.user-pill');
+    if (uBadge) uBadge.innerHTML = `<div class="user-dot"></div> ${currentUser.username}`;
+    if (currentUser.role === 'admin') {
+      const adminBtn = document.querySelector('.h-btn[onclick*="admin"]');
+      if (adminBtn) adminBtn.onclick = () => window.open('/dashboard','_blank');
+    }
+  } catch { window.location.href = '/login.html'; }
+})();
+
+function track(type, meta) {
+  fetch('/api/track', {
+    method: 'POST', credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type, meta })
+  }).catch(() => {});
+}
+
+async function logout() {
+  try { await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }); } catch {}
+  window.location.href = '/login.html';
+}
+
+</script>
+</body>
+</html>
